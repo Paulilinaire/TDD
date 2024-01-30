@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d52647c4-3623-4876-885b-a4a915cb2186" name="Changes" comment="" />
+    <list default="true" id="d52647c4-3623-4876-885b-a4a915cb2186" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../exo2/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../exo4/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../exo4/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../exo4/src/main/java/org/example/entity/CitySearch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../exo4/src/main/java/org/example/exceptions/NotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../exo4/src/test/java/entity/SearchCities.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../demo1/src/main/java/org/example/entity/Calculator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../demo1/src/test/java/entity/CalculatorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../exo1/.idea/jpa-buddy.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../exo1/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../exo1/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../exo2/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../exo2/src/main/java/org/example/entity/Fib.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../exo2/src/test/java/entity/FibTest.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -146,7 +161,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1706519630283</updated>
-      <workItem from="1706519856775" duration="1608000" />
+      <workItem from="1706519856775" duration="4433000" />
     </task>
     <servers />
   </component>
