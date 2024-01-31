@@ -1,8 +1,8 @@
 package entity;
 
 import org.example.entity.HangmanGame;
-import org.example.entity.RandomWordGenerator;
 import org.example.entity.WordGenerator;
+import org.example.exception.LoseException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,59 +11,127 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-
 @ExtendWith(MockitoExtension.class)
 public class HangmanGameTest {
 
     @Mock
-    private RandomWordGenerator randomWordGenerator;
-
-    private HangmanGame hangmanGame;
-
+    private WordGenerator wordGenerator;
+    private HangmanGame hangman;
 
     @BeforeEach
-    void setup(){
-        randomWordGenerator = Mockito.mock(RandomWordGenerator.class);
-        Mockito.when(randomWordGenerator.generateWords(any())).thenReturn("tam");
-        hangmanGame = new HangmanGame(randomWordGenerator);
+    void setUp() {
+        Mockito.when(wordGenerator.generateWords()).thenReturn("google");
+        hangman = new HangmanGame(wordGenerator);
+        hangman.makeMask();
     }
 
     @Test
-    void maskTest(){
-        String mask = hangmanGame.generateMask();
-        Assertions.assertEquals("_______", mask);
+    void testConvertWordToMask() {
+        Assertions.assertEquals("______", hangman.getMask());
     }
-
-
-
     @Test
-    void testLetterInWord() {
-        Assertions.assertTrue(hangmanGame.isCharInWord('a'));
+    void testTryCharWithCorrectChar() {
+        boolean result = hangman.tryChar('g');
+        Assertions.assertTrue(result);
     }
-
-
-
     @Test
-    void playerWinsWhenTIsGuessed() {
-        hangmanGame.isCharInWord('t');
-
-        Assertions.assertEquals(hangmanGame.isPlayerWin());
+    void testTryCharWithWrongChar() {
+        boolean result = hangman.tryChar('t');
+        Assertions.assertFalse(result);
     }
 
     @Test
-    void playerWinsWhenAIsGuessed() {
-        hangmanGame.isCharInWord('a');
-
-        Assertions.assertTrue(hangmanGame.isPlayerWin());
+    void testTryCharWithCorrectCharShouldNotUpdateTryValue() {
+        int tryNumber = hangman.getTryNumber();
+        hangman.tryChar('g');
+        Assertions.assertEquals(tryNumber, hangman.getTryNumber());
     }
 
     @Test
-    void playerWinsWhenMIsGuessed() {
-        hangmanGame.isCharInWord('m');
-
-        Assertions.assertTrue(hangmanGame.isPlayerWin());
+    void testTryCharWithWrongCharShouldNotDecreaseTryValue() {
+        int tryNumber = hangman.getTryNumber();
+        hangman.tryChar('a');
+        Assertions.assertEquals(tryNumber-1, hangman.getTryNumber());
     }
 
+    @Test
+    void testTryCharWithCorrectCharShouldUpdateMask() {
+        hangman.tryChar('g');
+        Assertions.assertEquals("g__g__", hangman.getMask());
+    }
+
+    @Test
+    void testTryCharWithWrongCharShouldNotUpdateMask() {
+        hangman.tryChar('g');
+        hangman.tryChar('a');
+        Assertions.assertEquals("g__g__", hangman.getMask());
+    }
+
+    @Test
+    void testWinWithCheckVictoryWithCorrectMask() {
+        //Arrange
+        hangman.tryChar('g');
+        hangman.tryChar('o');
+        hangman.tryChar('l');
+        hangman.tryChar('e');
+
+        //Act
+        boolean res = hangman.checkVictory();
+
+        // Assert
+        Assertions.assertTrue(res);
+    }
+    @Test
+    void testVictoryWhenCheckVictoryWithWrongMask() {
+
+        hangman.tryChar('g');
+
+
+        boolean res = hangman.checkVictory();
+
+        Assertions.assertFalse(res);
+    }
+
+    @Test
+    void testTryCharRaiseExceptionWhenTryNumberIs0() {
+
+        //Arrange
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+
+        //Act
+        Assertions.assertThrowsExactly(LoseException.class, () -> {
+            hangman.tryChar('c');
+        });
+    }
+
+    @Test
+    void testCheckVictoryRaiseExceptionWhenTryNumberIs0() {
+
+        //Arrange
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+        hangman.tryChar('c');
+
+        //Act
+        Assertions.assertThrowsExactly(LoseException.class, () -> {
+            hangman.checkVictory();
+        });
+    }
 
 }

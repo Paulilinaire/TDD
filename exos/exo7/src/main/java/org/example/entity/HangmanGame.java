@@ -1,46 +1,56 @@
 package org.example.entity;
 
-import lombok.Data;
-
-@Data
 public class HangmanGame {
 
-    private RandomWordGenerator randomWordGenerator;
-    private String wordToGuess;
-    private StringBuilder mask;
+    private WordGenerator wordGenerator;
 
-    public HangmanGame(RandomWordGenerator randomWordGenerator) {
-        this.randomWordGenerator = randomWordGenerator;
-        this.wordToGuess = randomWordGenerator.generateWords(new String[]{});
-        this.mask = new StringBuilder("_".repeat(wordToGuess.length()));
+    private String winnerWord;
+    private String mask;
+
+    private int tryNumber;
+
+    public  String getMask() {
+        return mask;
     }
 
+    public int getTryNumber() {return tryNumber;}
 
-    public String generateMask() {
-        return mask.toString();
+    public HangmanGame(WordGenerator wordGenerator) {
+        this.wordGenerator = wordGenerator;
+        tryNumber = 10;
+
     }
 
-    public boolean isCharInWord(char guess) {
-        boolean isCharInWord = wordToGuess.indexOf(guess) != -1;
-
-        if (isCharInWord) {
-            updateMask(guess);
-        }
-
-        return isCharInWord;
-    }
-
-    private void updateMask(char guess) {
-        for (int i = 0; i < wordToGuess.length(); i++) {
-            if (wordToGuess.charAt(i) == guess) {
-                mask.setCharAt(i, guess);
+    public boolean tryChar(char inputChar) {
+        boolean found = false;
+        StringBuilder nextMaskBuilder = new StringBuilder();
+        for(int i=0; i < winnerWord.length(); i++) {
+            if(winnerWord.charAt(i) == inputChar) {
+                nextMaskBuilder.append(inputChar);
+                found = true;
+            }
+            else {
+                nextMaskBuilder.append(this.mask.charAt(i));
             }
         }
-
+        if (found) {
+            this.mask = nextMaskBuilder.toString();
+        }else {
+            tryNumber--;
+        }
+        return found;
     }
 
-    public boolean isPlayerWin() {
-        return !mask.toString().contains("_");
+    public void makeMask() {
+        this.winnerWord = wordGenerator.generateWords();
+        StringBuilder builder = new StringBuilder();
+        for(int i=0; i < this.winnerWord.length(); i++) {
+            builder.append("_");
+        }
+        this.mask = builder.toString();
+    }
+
+    public boolean checkVictory() {
+        return winnerWord.equals(mask);
     }
 }
-
