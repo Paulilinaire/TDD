@@ -104,6 +104,25 @@ public class BowlingGameTest {
 
         Assertions.assertEquals(expectedScore, bowlingGame.score());
     }
+    @Test
+    void canRollAgainAfterSpare() {
+        bowlingGame.roll(5);
+        bowlingGame.roll(5); // Spare
+
+        // Verify that the score is 10  allows rolling again
+        Assertions.assertTrue(bowlingGame.canRollAgain());
+    }
+    @Test
+    void scoreIncreasesAfterSpareAndNextRoll() {
+        bowlingGame.roll(5);
+        bowlingGame.roll(5);
+
+        // Troisième lancer après le spare
+        bowlingGame.roll(6);
+
+        // Le score devrait être le total des deux lancers (5 + 5) + le résultat du prochain lancer (3)
+        Assertions.assertEquals(16, bowlingGame.score());
+    }
 
 
 

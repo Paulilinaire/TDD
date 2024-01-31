@@ -2,6 +2,9 @@ package org.example.entity;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class BowlingGame {
 
@@ -11,6 +14,8 @@ public class BowlingGame {
 
     private int score = 0;
     private int throwsCount = 0;
+    private List<Integer> throwsResults = new ArrayList<>();
+    private boolean includeNextRollInScore = false;
 
     public BowlingGame(PinGenerator pinGenerator) {
         this.pinGenerator = pinGenerator;
@@ -25,7 +30,16 @@ public class BowlingGame {
 
 
     public int score() {
-        return score;
+        int totalScore = score;
+
+        if (isSpare() && includeNextRollInScore) {
+            // Si le dernier lancer était un spare, ajoute le résultat du prochain lancer au score
+            totalScore += throwsResults.get(throwsResults.size() - 1);
+            // Réinitialise l'indicateur
+            includeNextRollInScore = false;
+        }
+
+        return totalScore;
     }
 
     public boolean isStrike() {
@@ -44,5 +58,13 @@ public class BowlingGame {
         // We implement logic to retrieve the score of the last throw
         // In this example, we assume each throw scores the same as the number of pins knocked down
         return score - (throwsCount % 2 == 0 ? 0 : 1);
+    }
+    public boolean canRollAgain() {
+        return throwsCount < MAX_THROWS || (throwsCount == MAX_THROWS && isSpare());
+
+    }
+    private boolean isSpare() {
+        return throwsResults.size() >= 2 &&
+                throwsResults.get(throwsResults.size() - 1) + throwsResults.get(throwsResults.size() - 2) == 10;
     }
 }
