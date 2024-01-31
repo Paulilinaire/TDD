@@ -2,6 +2,7 @@ package entity;
 
 import org.example.entity.BowlingGame;
 import org.example.entity.PinGenerator;
+import org.example.entity.Round;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,10 +18,14 @@ public class BowlingGameTest {
     private PinGenerator pinGenerator;
     private BowlingGame bowlingGame;
 
+    private Round round;
+
     @BeforeEach
     void setUp() {
         bowlingGame = new BowlingGame(pinGenerator);
+        round = new Round();
         Mockito.lenient().when(pinGenerator.generatePin()).thenReturn(1);
+        round.setBowlingGame(bowlingGame);
     }
 
 
@@ -60,12 +65,51 @@ public class BowlingGameTest {
         bowlingGame.roll(5);
 
         Assertions.assertEquals(7, bowlingGame.score());
-        // score = 7 beacause it counts the 1st and 2nd throw and not the third
+        // score = 7 because it counts the 1st and 2nd throw and not the third
     }
 
 
     @Test
-    void newThrowWhe
+    void canRollAgainAfterStrikeInLastRound() {
+            bowlingGame.roll(10);
+
+
+        round.StrikeAtLastRound();
+
+        // After a strike in the last round, there should be an opportunity to roll again
+        Assertions.assertEquals(1, bowlingGame.getThrowsCount());
+    }
+
+
+    @Test
+    void rollAfterStrikeAndOneThrowWhenLastRound() {
+
+            bowlingGame.roll(10);
+            bowlingGame.roll(4);
+
+
+        Assertions.assertTrue(round.StrikeAtLastRound());
+    }
+
+    @Test
+    void scoreAfterStrikeInLastRound() {
+        for (int i = 0; i < 9; i++) {
+            bowlingGame.roll(10);
+            bowlingGame.roll(5);
+            bowlingGame.roll(3);
+        }
+        round.StrikeAtLastRound();
+
+        int expectedScore = 18; // 
+
+        Assertions.assertEquals(expectedScore, bowlingGame.score());
+    }
+
+
+
+
+
+
 
 
 }
