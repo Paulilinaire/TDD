@@ -3,11 +3,19 @@ package org.example.entity;
 import lombok.Data;
 
 @Data
-public class Frame {
+public class BowlingGame {
+
     private static final int MAX_THROWS = 2;
+
+    private PinGenerator pinGenerator;
 
     private int score = 0;
     private int throwsCount = 0;
+
+    public BowlingGame(PinGenerator pinGenerator){
+        this.pinGenerator = pinGenerator;
+
+    }
 
     public void roll(int pins) {
         if (throwsCount < MAX_THROWS) {
@@ -35,4 +43,8 @@ public class Frame {
         // In this example, assume each throw scores the same as the number of pins knocked down
         return score - throwsCount % 2;
     }
+
+
+
+
 }
