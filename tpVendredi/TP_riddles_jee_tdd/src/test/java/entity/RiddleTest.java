@@ -20,10 +20,8 @@ import org.mockito.quality.Strictness;
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class RiddleTest {
 
-    @Mock
-    private Repository<Riddle> riddleRepository;
 
-    @InjectMocks
+    @Mock
     private RiddleService riddleService;
 
     @BeforeEach
